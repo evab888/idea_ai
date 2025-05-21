@@ -1,0 +1,18 @@
+{
+  "time_span_days": 30,
+  "objectives": [
+    {
+      "objective": "Ein verkaufsfähiges Angebot inkl. Landingpage steht",
+      "key_results": [
+        {
+          "key_result": "Erste Kundenkontakte & Leadbasis aufbauen",
+          "total_tasks": 5
+        },
+        {
+          "key_result": "Automatisierte Prozesse & Infrastruktur aufsetzen",
+          "total_tasks": 3
+        }
+      ]
+    }
+  ]
+}
