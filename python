@@ -1,0 +1,50 @@
+main.py
+
+import json
+from datetime import datetime, timedelta
+from ics import Calendar, Event
+
+def load_okrs(file_path):
+    with open(file_path, "r") as file:
+        return json.load(file)
+
+def distribute_tasks(okrs):
+    calendar = Calendar()
+    start_date = datetime.today()
+    total_days = okrs["time_span_days"]
+    current_date = start_date
+
+    all_tasks = []
+
+    for obj in okrs["objectives"]:
+        for kr in obj["key_results"]:
+            for task_index in range(kr["total_tasks"]):
+                all_tasks.append({
+                    "objective": obj["objective"],
+                    "key_result": kr["key_result"],
+                    "task_index": task_index + 1
+                })
+
+    for idx, task in enumerate(all_tasks):
+        task_date = start_date + timedelta(days=(idx % total_days))
+
+        event = Event()
+        event.name = f"{task['objective']} - {task['key_result']} (Task {task['task_index']})"
+        event.begin = task_date.replace(hour=9, minute=0)
+        event.duration = timedelta(hours=1)
+        event.description = f"Work on task {task['task_index']} for key result: {task['key_result']}"
+        calendar.events.add(event)
+
+    return calendar
+
+def main():
+    okrs = load_okrs("okrs.json")
+    calendar = distribute_tasks(okrs)
+
+    with open("output_calendar.ics", "w") as file:
+        file.writelines(calendar)
+
+    print("✅ Calendar created: output_calendar.ics")
+
+if __name__ == "__main__":
+    main()
